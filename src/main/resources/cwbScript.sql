@@ -1,62 +1,98 @@
-create database IF NOT EXISTS cwbCountryTownMapping
+drop database IF EXISTS cwb_country_town_mapping;
+create database cwb_country_town_mapping
 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
-use cwbCountryTownMapping;
+use cwb_country_town_mapping;
 
-drop table if exists country_resource_id;
+SET FOREIGN_KEY_CHECKS = 0;
 
-create table country_resource_id (
+drop table if exists area_resource_id;
+
+create table area_resource_id (
 	resource_id varchar(32) not null,
-	name varchar(128) not null,
+	area varchar(128) not null,
 	period tinyint not null,
 	primary key(resource_id)
 );
-insert into country_resource_id values
-	('F-D0047-001','宜蘭縣',0),
-	('F-D0047-005','桃園市',0),
-	('F-D0047-009','新竹縣',0),
-	('F-D0047-013','苗栗縣',0),
-	('F-D0047-017','彰化縣',0),
-	('F-D0047-021','南投縣',0),
-	('F-D0047-025','雲林縣',0),
-	('F-D0047-029','嘉義縣',0),
-	('F-D0047-033','屏東縣',0),
-	('F-D0047-037','臺東縣',0),
-	('F-D0047-041','花蓮縣',0),
-	('F-D0047-045','澎湖縣',0),
-	('F-D0047-049','基隆市',0),
-	('F-D0047-053','新竹市',0),
-	('F-D0047-057','嘉義市',0),
-	('F-D0047-061','臺北市',0),
-	('F-D0047-065','高雄市',0),
-	('F-D0047-069','新北市',0),
-	('F-D0047-073','臺中市',0),
-	('F-D0047-077','臺南市',0),
-	('F-D0047-081','連江縣',0),
-	('F-D0047-085','金門縣',0),
+insert into area_resource_id values
+	('F-D0047-001','宜蘭縣',1),
+	('F-D0047-005','桃園市',1),
+	('F-D0047-009','新竹縣',1),
+	('F-D0047-013','苗栗縣',1),
+	('F-D0047-017','彰化縣',1),
+	('F-D0047-021','南投縣',1),
+	('F-D0047-025','雲林縣',1),
+	('F-D0047-029','嘉義縣',1),
+	('F-D0047-033','屏東縣',1),
+	('F-D0047-037','臺東縣',1),
+	('F-D0047-041','花蓮縣',1),
+	('F-D0047-045','澎湖縣',1),
+	('F-D0047-049','基隆市',1),
+	('F-D0047-053','新竹市',1),
+	('F-D0047-057','嘉義市',1),
+	('F-D0047-061','臺北市',1),
+	('F-D0047-065','高雄市',1),
+	('F-D0047-069','新北市',1),
+	('F-D0047-073','臺中市',1),
+	('F-D0047-077','臺南市',1),
+	('F-D0047-081','連江縣',1),
+	('F-D0047-085','金門縣',1),
 
-	('F-D0047-003','宜蘭縣',1),
-	('F-D0047-007','桃園市',1),
-	('F-D0047-011','新竹縣',1),
-	('F-D0047-015','苗栗縣',1),
-	('F-D0047-019','彰化縣',1),
-	('F-D0047-023','南投縣',1),
-	('F-D0047-027','雲林縣',1),
-	('F-D0047-031','嘉義縣',1),
-	('F-D0047-035','屏東縣',1),
-	('F-D0047-039','臺東縣',1),
-	('F-D0047-043','花蓮縣',1),
-	('F-D0047-047','澎湖縣',1),
-	('F-D0047-051','基隆市',1),
-	('F-D0047-055','新竹市',1),
-	('F-D0047-059','嘉義市',1),
-	('F-D0047-063','臺北市',1),
-	('F-D0047-067','高雄市',1),
-	('F-D0047-071','新北市',1),
-	('F-D0047-075','臺中市',1),
-	('F-D0047-079','臺南市',1),
-	('F-D0047-083','連江縣',1),
-	('F-D0047-087','金門縣',1)
+	('F-D0047-003','宜蘭縣',7),
+	('F-D0047-007','桃園市',7),
+	('F-D0047-011','新竹縣',7),
+	('F-D0047-015','苗栗縣',7),
+	('F-D0047-019','彰化縣',7),
+	('F-D0047-023','南投縣',7),
+	('F-D0047-027','雲林縣',7),
+	('F-D0047-031','嘉義縣',7),
+	('F-D0047-035','屏東縣',7),
+	('F-D0047-039','臺東縣',7),
+	('F-D0047-043','花蓮縣',7),
+	('F-D0047-047','澎湖縣',7),
+	('F-D0047-051','基隆市',7),
+	('F-D0047-055','新竹市',7),
+	('F-D0047-059','嘉義市',7),
+	('F-D0047-063','臺北市',7),
+	('F-D0047-067','高雄市',7),
+	('F-D0047-071','新北市',7),
+	('F-D0047-075','臺中市',7),
+	('F-D0047-079','臺南市',7),
+	('F-D0047-083','連江縣',7),
+	('F-D0047-087','金門縣',7),
+	('F-C0032-001','全縣市',3)
+;
+
+drop table if exists country;
+
+create table country (
+	country varchar(128) not null,
+	primary key(country)
+);
+
+insert into country values 
+	('宜蘭縣'),
+	('花蓮縣'),
+	('臺東縣'),
+	('澎湖縣'),
+	('金門縣'),
+	('連江縣'),
+	('臺北市'),
+	('新北市'),
+	('桃園市'),
+	('臺中市'),
+	('臺南市'),
+	('高雄市'),
+	('基隆市'),
+	('新竹縣'),
+	('新竹市'),
+	('苗栗縣'),
+	('彰化縣'),
+	('南投縣'),
+	('雲林縣'),
+	('嘉義縣'),
+	('嘉義市'),
+	('屏東縣')
 ;
 
 drop table if exists country_town;
@@ -65,7 +101,9 @@ create table country_town (
 	id smallint not null AUTO_INCREMENT,
 	town varchar(128) not null,
 	country varchar(128) not null,
-	primary key(id)
+	primary key(id),
+	constraint FK_country FOREIGN KEY (country) REFERENCES country (country)
+	on delete no action on update no action
 ) AUTO_INCREMENT=1;
 
 insert into country_town (town,country) values 
@@ -439,5 +477,4 @@ insert into country_town (town,country) values
 	('烏坵鄉','金門縣')
 ;
 	
-	
-
+SET FOREIGN_KEY_CHECKS = 1;

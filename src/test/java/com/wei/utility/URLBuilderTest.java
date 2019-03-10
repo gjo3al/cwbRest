@@ -6,7 +6,9 @@ import static org.junit.Assert.assertThat;
 
 import java.net.MalformedURLException;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.wei.urlbuilder.CwbRestURLBuilder;
@@ -16,43 +18,63 @@ import com.wei.urlbuilder.StringParamName;
 
 public class URLBuilderTest {
 
-	private CwbRestURLBuilder builder;
+	private static CwbRestURLBuilder builder;
+	
+	@BeforeClass
+	public static void setUp() {
+		builder = new CwbRestURLBuilder("新竹市", 7);
+	}
 	
 	@Before
-	public void setUp() {
-		builder = new CwbRestURLBuilder("testId");
+	public void resetBuilder() {
+		builder.resetUrl();
 	}
 	
 	@Test
-	public void testURLBuilderConstructor_correct() {
-		assertThat(builder.toString(), 
-				is("https://opendata.cwb.gov.tw/api/v1/rest/datastore/testId?Authorization=CWB-6C72897A-C429-49C1-84F7-7FE7D95071AC"));
+	public void testURLBuilderBuild_correct() throws MalformedURLException {
+		assertThat(builder.build().toString(), 
+				is("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-055?Authorization=CWB-6C72897A-C429-49C1-84F7-7FE7D95071AC"));
 	}
 	
 	@Test
-	public void testSetIntParam() throws MalformedURLException {
+	public void testSetIntParam() {
 		builder.setIntParam(IntParamName.LIMIT, 1);
-		String URLString = builder.build().toString();
+		String urlString = builder.getCurrentUrl();
 		
-		assertThat(URLString, 
+		assertThat(urlString, 
 				containsString("&limit=1"));
 	}
 	
 	@Test
-	public void testSetStringParam() throws MalformedURLException {
+	public void testSetStringParam() {
 		builder.setStringParam(StringParamName.SORT, "time");
-		String URLString = builder.build().toString();
+		String urlString = builder.getCurrentUrl();
 		
-		assertThat(URLString, 
+		assertThat(urlString, 
 				containsString("&sort=time"));
 	}
 	
 	@Test
-	public void testAddListParam_miltiElements() throws MalformedURLException {
+	public void testAddListParam_miltiElements() {
 		builder.addListParam(ListParamName.ELEMENTNAME, "PoP", "CI");
-		String URLString = builder.build().toString();
+		String urlString = builder.getCurrentUrl();
 		
-		assertThat(URLString, 
+		assertThat(urlString, 
 				containsString("&elementName=PoP,CI"));
+	}
+	
+	@Test
+	public void testResetUrl() {
+		builder.addListParam(ListParamName.ELEMENTNAME, "PoP", "CI");
+		builder.resetUrl();
+		String urlString = builder.getCurrentUrl();
+		
+		assertThat(urlString, 
+				is("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-055?Authorization=CWB-6C72897A-C429-49C1-84F7-7FE7D95071AC"));
+	}
+	
+	@AfterClass
+	public static void close() {
+		builder.close();
 	}
 }

@@ -12,7 +12,7 @@ import com.wei.urlbuilder.StringParamName;
 public class AppDemo {
 
 	public static void main(String[] args) {
-		ObjectMapper mapper = new ObjectMapper();
+		/*ObjectMapper mapper = new ObjectMapper();
 		try {
 			CwbRestURLBuilder builder = new CwbRestURLBuilder("F-D0047-003");
 			URL url = builder.setStringParam(StringParamName.SORT, "time")
@@ -29,7 +29,16 @@ public class AppDemo {
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
+		}*/
+		
+		String countries = "宜蘭縣,花蓮縣,臺東縣,澎湖縣,金門縣,連江縣,臺北市,新北市,\r\n" + 
+				"桃園市,臺中市,臺南市,高雄市,基隆市,新竹縣,新竹市,苗栗縣,\r\n" + 
+				"彰化縣,南投縣,雲林縣,嘉義縣,嘉義市,屏東縣";
+		countries = countries.replaceAll("\\r\\n", "");
+		for(String country:countries.split(",")) {
+			System.out.printf("\t(\'%s\'),%n", country);	
 		}
+		
 		
 	}
 

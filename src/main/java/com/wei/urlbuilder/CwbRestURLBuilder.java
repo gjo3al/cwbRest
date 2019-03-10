@@ -11,11 +11,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.wei.dao.ResourceIdDAO;
+import com.wei.dao.ResourceIdDAOImpl;
+
 public class CwbRestURLBuilder {
 	
-	private Properties properties;
+	private final String CONFIG_FILE = "src/main/resources/data.properties";
 	
-	private StringBuilder URLString;
+	private ResourceIdDAO resourceIdDAO = new ResourceIdDAOImpl();
+	
+	private StringBuilder urlString;
+	private String urlWithoutParams;
 	private Map<String, Integer> intParams = new HashMap<>();
 	private Map<String, String> stringParams = new HashMap<>();
 	private Map<String, List<String>> listParams = new HashMap<>();
@@ -30,24 +36,32 @@ public class CwbRestURLBuilder {
 	private String timeFrom;
 	private String timeTo;*/
 	
-	public CwbRestURLBuilder(String resourceId) {
-		properties = new Properties();
-		String configFile = "src/main/resources/data.properties";
+	public CwbRestURLBuilder(String area, int period) {
+		this.urlString = getRestUrl(area, period);
+		this.urlWithoutParams = urlString.toString();
+	}
+
+	private StringBuilder getRestUrl(String area, int period) {
 		
+		Properties properties = new Properties();
+		StringBuilder builder = new StringBuilder("");
 		try {
-			properties.load(new FileInputStream(configFile));
+			properties.load(new FileInputStream(CONFIG_FILE));
+			String url = properties.getProperty("CWB_OPENDATA_REST_URL");
+			String resourceId = resourceIdDAO.getResourceId(area, period);
+			String authorization = properties.getProperty("Authorization");
+			
+			builder.append(url)
+					.append("/").append(resourceId)
+					.append("?Authorization=").append(authorization);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		}
 		
-		this.URLString = new StringBuilder(properties.getProperty("CWB_OPENDATA_REST_URL"));
-		URLString.append("/")
-				.append(resourceId)
-				.append("?Authorization=")
-				.append(properties.getProperty("Authorization"));
+		return builder;
 	}
-		
+	
 	public CwbRestURLBuilder setIntParam(IntParamName name, int value) {
 		intParams.put(name.fieldName(), value);
 		return this;
@@ -67,32 +81,50 @@ public class CwbRestURLBuilder {
 		return this;
 	}
 	
+	public String getCurrentUrl() {
+		addParams();
+		return urlString.toString();
+	}
+
+	public void resetUrl() {
+		clearParams();
+		urlString.setLength(0);
+		urlString.append(urlWithoutParams);
+	}
+	
 	public URL build() throws MalformedURLException {
 		addParams();
-		return new URL(URLString.toString());
+		return new URL(urlString.toString());
+	}
+	
+	public void close() {
+		resourceIdDAO.close();
 	}
 	
 	private CwbRestURLBuilder addParams() {
 		intParams.forEach((key, value) -> {
-			URLString.append("&")
+			urlString.append("&")
 					.append(key)
 					.append("=")
 					.append(value);
 		});
 		
 		stringParams.forEach((key, value) -> {
-			URLString.append("&")
+			urlString.append("&")
 					.append(key)
 					.append("=")
 					.append(value);
 		});
 		
 		listParams.forEach((key, values) -> {
-			URLString.append("&")
+			urlString.append("&")
 					.append(key)
 					.append("=")
 					.append(listParamsToString(values));
 		});
+		
+		clearParams() ;
+		
 		return this;
 	}
 	
@@ -105,8 +137,15 @@ public class CwbRestURLBuilder {
 		return stringOfValues.toString();
 	}
 	
+	private void clearParams() {
+		intParams.clear();
+		stringParams.clear();
+		listParams.clear();
+	}
+	
 	@Override
 	public String toString() {
-		return URLString.toString();
+		return urlString.toString();
 	}
+	
 }
