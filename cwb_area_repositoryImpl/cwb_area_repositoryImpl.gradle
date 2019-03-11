@@ -1,0 +1,9 @@
+dependencies {
+	implementation 'org.springframework:spring-core:5.1.5.RELEASE'
+    implementation 'org.springframework:spring-context:5.1.5.RELEASE'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.3.0'
+    
+    testImplementation 'org.hamcrest:hamcrest-library:2.1'
+	testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.24.0'
+}
