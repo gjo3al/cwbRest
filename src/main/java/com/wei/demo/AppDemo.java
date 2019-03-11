@@ -1,14 +1,5 @@
 package com.wei.demo;
 
-import java.net.URL;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wei.urlbuilder.CwbRestURLBuilder;
-import com.wei.urlbuilder.ListParamName;
-import com.wei.urlbuilder.StringParamName;
-
-
 public class AppDemo {
 
 	public static void main(String[] args) {

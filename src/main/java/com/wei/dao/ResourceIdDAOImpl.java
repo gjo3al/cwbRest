@@ -9,13 +9,15 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Repository;
 
 import com.wei.entity.Country;
 import com.wei.entity.CountryTownMapping;
 import com.wei.entity.ResourceIdMapping;
 
+@Repository
 public class ResourceIdDAOImpl implements ResourceIdDAO {
-
+	
 	private SessionFactory factory;
 	public ResourceIdDAOImpl() {
 		factory = new Configuration()

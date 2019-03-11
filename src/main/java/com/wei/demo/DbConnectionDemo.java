@@ -1,14 +1,13 @@
 package com.wei.demo;
 
-import com.wei.dao.ResourceIdDAO;
-import com.wei.dao.ResourceIdDAOImpl;
+import com.wei.urlbuilder.CwbRestURLBuilder;
 
 public class DbConnectionDemo {
 
 	public static void main(String[] args) {
-		ResourceIdDAO resourceIdDAO = new ResourceIdDAOImpl();
+		CwbRestURLBuilder builder= new CwbRestURLBuilder("新竹市", 7);
 		
-		System.out.println(resourceIdDAO.getTowns("新竹市"));
+		System.out.println(builder.getCurrentUrl());
 	}
 
 }
