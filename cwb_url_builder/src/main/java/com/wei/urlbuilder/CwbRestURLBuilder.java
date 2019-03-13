@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import com.wei.repository.ResourceIdDAO;
-import com.wei.repositoryImpl.ResourceIdDAOImpl;
+import com.wei.repository.ResourceIdRepository;
+import com.wei.repository.ResourceIdRepositoryImpl;
 
 public class CwbRestURLBuilder {
 	
 	private final String CONFIG_FILE = "src/main/resources/data.properties";
 	
-	private ResourceIdDAO resourceIdDAO = new ResourceIdDAOImpl();
+	private ResourceIdRepository resourceIdRepository = new ResourceIdRepositoryImpl();
 	
 	private StringBuilder urlString;
 	private String urlWithoutParams;
@@ -48,7 +48,7 @@ public class CwbRestURLBuilder {
 		try {
 			properties.load(new FileInputStream(CONFIG_FILE));
 			String url = properties.getProperty("CWB_OPENDATA_REST_URL");
-			String resourceId = resourceIdDAO.getResourceId(area, period);
+			String resourceId = resourceIdRepository.getResourceId(area, period);
 			String authorization = properties.getProperty("Authorization");
 			
 			builder.append(url)
@@ -98,7 +98,7 @@ public class CwbRestURLBuilder {
 	}
 	
 	public void close() {
-		resourceIdDAO.close();
+		resourceIdRepository.close();
 	}
 	
 	private CwbRestURLBuilder addParams() {

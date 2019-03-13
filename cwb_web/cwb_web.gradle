@@ -1,0 +1,26 @@
+plugins {
+    id 'war'
+    id 'org.gretty' version '2.3.1'
+}
+
+// There are some bugs in older version, so we use the lastest one
+gretty {
+    servletContainer = 'jetty9.4'
+}
+
+ext.tomcatHome = 'C:/Apache Software Foundation/Tomcat 9.0'
+ext.tomcatWebapps = "$tomcatHome/webapps"
+
+war{
+	archiveName = 'cwb_web.war'	
+}
+
+task deployToTomcat(type: Copy, dependsOn:'build'){	
+	from war
+    into "$tomcatWebapps"	
+}
+
+dependencies {
+	implementation 'org.springframework:spring-webmvc:5.1.5.RELEASE'
+	//implementation 'javax.servlet:javax.servlet-api:4.0.1' 
+}
